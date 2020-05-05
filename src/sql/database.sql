@@ -1,14 +1,26 @@
-CREATE DATABASE news_portal;
 
-USE news_portal;
 
-CREATE TABLE news(
-  id_news INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  title VARCHAR(100),
-  news TEXT,
-  data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+SELECT COUNT(Producto), Producto
+from venta
+GROUP by producto
+ORDER by COUNT(Producto) DESC;
 
-DESCRIBE news;
-INSERT INTO news(title,news) VALUES ('my title','content of the news');
-SELECT * FROM news;
+
+SELECT cajeros.NomApels, productos.Nombre,productos.Precio, maquinas_registradoras.Piso
+FROM (((venta
+INNER JOIN cajeros ON venta.Cajero = cajeros.Cajero)
+INNER JOIN productos ON venta.Producto = productos.Producto)
+INNER JOIN maquinas_registradoras ON venta.Maquina = maquinas_registradoras.Maquina);
+
+SELECT SUM(productos.Precio),maquinas_registradoras.Piso
+FROM ((venta
+INNER JOIN productos ON venta.Producto=productos.Producto)
+INNER JOIN maquinas_registradoras ON venta.Maquina=maquinas_registradoras.Maquina)
+GROUP BY maquinas_registradoras.Piso;
+
+
+SELECT cajeros.cajero, cajeros.NomApels, SUM(productos.Precio)
+FROM ((venta
+INNER JOIN cajeros ON venta.Cajero=cajeros.Cajero)
+INNER JOIN productos ON venta.Producto=productos.Producto)
+GROUP BY venta.Cajero;
